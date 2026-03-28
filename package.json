@@ -1,0 +1,15 @@
+{
+  "name": "janus",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TypeScript library for JSON decision-tree forms — visibility, pricing, validation, and React Native components",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "typecheck": "npm run typecheck --workspaces",
+    "test": "npm run test --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present"
+  },
+  "license": "MIT"
+}

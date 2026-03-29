@@ -16,6 +16,12 @@ export type VisibleIf =
   | { after: string }
   | { less_than: [string, number] }
   | { greater_than: [string, number] }
+  | { prev_increased: string }
+  | { prev_decreased: string }
+  | { prev_unchanged: string }
+  | { prev_changed: string }
+  | { prev_changed_from: [string, string] }
+  | { prev_changed_to: [string, string] }
 
 export interface QuestionOption {
   id: string
@@ -35,6 +41,7 @@ export interface Question {
   required?: boolean
   visible_if?: VisibleIf
   options?: QuestionOption[]
+  previous_answer?: 'skip' | 'prefill'
 }
 
 export interface FormPage {

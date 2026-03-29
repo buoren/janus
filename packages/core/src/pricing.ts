@@ -76,20 +76,21 @@ export function calculatePaymentDetails(
   form: RegistrationForm,
   answers: Answers,
   now?: string,
+  previousAnswers?: Answers,
 ): PaymentDetails {
   const currency = form.currency ?? 'EUR'
   const decimals = form.decimals ?? 2
   const lines: PaymentDetails['lines'] = []
   let sortOrder = 0
 
-  for (const page of visiblePages(form, answers)) {
+  for (const page of visiblePages(form, answers, previousAnswers)) {
     for (const q of page.questions ?? []) {
-      if (!isQuestionVisible(q, answers, now)) continue
+      if (!isQuestionVisible(q, answers, now, previousAnswers)) continue
 
       const answer = answers[q.id]
       if (answer === undefined || answer === null) continue
 
-      const opts = visibleOptions(q, answers, now)
+      const opts = visibleOptions(q, answers, now, previousAnswers)
       const optsById = new Map(opts.map((o) => [o.id, o]))
 
       if (q.type === 'single_choice' && optsById.has(answer)) {

@@ -12,9 +12,10 @@ export const QuestionRenderer: React.FC<QuestionWidgetProps> = ({
   fieldErrors,
   styles,
   datePlaceholder,
+  previousAnswers,
 }) => {
   const opts = (q.options || []).filter((o: any) =>
-    evaluateVisibleIf(o.visible_if, answers)
+    evaluateVisibleIf(o.visible_if, answers, undefined, previousAnswers)
   )
 
   return (

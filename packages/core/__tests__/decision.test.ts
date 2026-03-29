@@ -1,9 +1,9 @@
-import type { DecisionRule, FormPage, RegistrationForm } from '../src/types'
+import type { DecisionRule, FormPage, RegistrationForm, Question } from '../src/types'
 import { evaluateDecisionRules, evaluateDecisionResults, isPageGated, isPageVisible } from '../src/decision'
 import { visiblePages } from '../src/visibility'
 import { calculatePaymentDetails } from '../src/pricing'
 import { validateAnswers, validatePage } from '../src/validation'
-import { resolveAllAnswers } from '../src/answers'
+import { resolveAllAnswers, applyPreviousAnswers } from '../src/answers'
 
 const makeRule = (overrides?: Partial<DecisionRule>): DecisionRule => ({
   description: 'Test rule',
@@ -535,5 +535,209 @@ describe('integration: resolveAllAnswers skips hidden pages', () => {
     const resolved = resolveAllAnswers(form, { reg_type: 'individual', name: 'Alice', team_name: 'Hawks' })
     expect(resolved).toHaveLength(1)
     expect(resolved[0].questionId).toBe('name')
+  })
+})
+
+// ---------------------------------------------------------------------------
+// prev_* conditions in decision rules
+// ---------------------------------------------------------------------------
+
+describe('evaluateDecisionRules with prev_* conditions', () => {
+  it('prev_increased routes to hospital page when pain increased', () => {
+    const rules: DecisionRule[] = [
+      {
+        description: 'Pain routing',
+        branches: [
+          { condition: { prev_increased: 'pain_level' }, pages: ['hospital_page'] },
+        ],
+        default: ['routine_page'],
+      },
+    ]
+    const result = evaluateDecisionRules(rules, { pain_level: 8 }, { pain_level: 3 })
+    expect(result).toEqual(new Set(['hospital_page']))
+  })
+
+  it('prev_increased falls to default when pain not increased', () => {
+    const rules: DecisionRule[] = [
+      {
+        description: 'Pain routing',
+        branches: [
+          { condition: { prev_increased: 'pain_level' }, pages: ['hospital_page'] },
+        ],
+        default: ['routine_page'],
+      },
+    ]
+    const result = evaluateDecisionRules(rules, { pain_level: 3 }, { pain_level: 8 })
+    expect(result).toEqual(new Set(['routine_page']))
+  })
+
+  it('prev_changed routes when value changed', () => {
+    const rules: DecisionRule[] = [
+      {
+        description: 'Status change',
+        branches: [
+          { condition: { prev_changed: 'medication' }, pages: ['review_page'] },
+        ],
+        default: ['skip_review'],
+      },
+    ]
+    const result = evaluateDecisionRules(rules, { medication: 'B' }, { medication: 'A' })
+    expect(result).toEqual(new Set(['review_page']))
+  })
+
+  it('prev_* conditions return false with no previousAnswers (backward compatible)', () => {
+    const rules: DecisionRule[] = [
+      {
+        description: 'Pain routing',
+        branches: [
+          { condition: { prev_increased: 'pain_level' }, pages: ['hospital_page'] },
+        ],
+        default: ['routine_page'],
+      },
+    ]
+    const result = evaluateDecisionRules(rules, { pain_level: 8 })
+    expect(result).toEqual(new Set(['routine_page']))
+  })
+
+  it('evaluateDecisionResults works with prev_changed_to', () => {
+    const rules: DecisionRule[] = [
+      {
+        description: 'Critical alert',
+        result_type: 'alert',
+        branches: [
+          {
+            condition: { prev_changed_to: ['status', 'critical'] },
+            pages: ['alert_page'],
+            result: { alert_level: 'high' },
+          },
+        ],
+      },
+    ]
+    const result = evaluateDecisionResults(rules, { status: 'critical' }, { status: 'normal' })
+    expect(result).toEqual({
+      values: { alert_level: 'high' },
+      result_types: ['alert'],
+    })
+  })
+})
+
+// ---------------------------------------------------------------------------
+// applyPreviousAnswers
+// ---------------------------------------------------------------------------
+
+describe('applyPreviousAnswers', () => {
+  it('prefills answers for questions with previous_answer=prefill', () => {
+    const form: RegistrationForm = {
+      currency: 'EUR',
+      decimals: 2,
+      pages: [{
+        id: 'p1',
+        title: 'Page 1',
+        questions: [
+          { id: 'name', type: 'short_text', label: 'Name', previous_answer: 'prefill' },
+          { id: 'email', type: 'short_text', label: 'Email' },
+        ],
+      }],
+    }
+    const prev = { name: 'Alice', email: 'alice@example.com' }
+    const { prefilled, skippedQuestionIds } = applyPreviousAnswers(form, prev)
+    expect(prefilled).toEqual({ name: 'Alice' })
+    expect(skippedQuestionIds.size).toBe(0)
+  })
+
+  it('skips questions with previous_answer=skip', () => {
+    const form: RegistrationForm = {
+      currency: 'EUR',
+      decimals: 2,
+      pages: [{
+        id: 'p1',
+        title: 'Page 1',
+        questions: [
+          { id: 'name', type: 'short_text', label: 'Name', previous_answer: 'skip' },
+          { id: 'age', type: 'number', label: 'Age', previous_answer: 'prefill' },
+        ],
+      }],
+    }
+    const prev = { name: 'Alice', age: 30 }
+    const { prefilled, skippedQuestionIds } = applyPreviousAnswers(form, prev)
+    expect(prefilled).toEqual({ name: 'Alice', age: 30 })
+    expect(skippedQuestionIds).toEqual(new Set(['name']))
+  })
+
+  it('ignores questions without previous_answer field', () => {
+    const form: RegistrationForm = {
+      currency: 'EUR',
+      decimals: 2,
+      pages: [{
+        id: 'p1',
+        title: 'Page 1',
+        questions: [
+          { id: 'name', type: 'short_text', label: 'Name' },
+        ],
+      }],
+    }
+    const { prefilled, skippedQuestionIds } = applyPreviousAnswers(form, { name: 'Alice' })
+    expect(prefilled).toEqual({})
+    expect(skippedQuestionIds.size).toBe(0)
+  })
+
+  it('ignores questions where previousAnswers has no value', () => {
+    const form: RegistrationForm = {
+      currency: 'EUR',
+      decimals: 2,
+      pages: [{
+        id: 'p1',
+        title: 'Page 1',
+        questions: [
+          { id: 'name', type: 'short_text', label: 'Name', previous_answer: 'skip' },
+        ],
+      }],
+    }
+    const { prefilled, skippedQuestionIds } = applyPreviousAnswers(form, {})
+    expect(prefilled).toEqual({})
+    expect(skippedQuestionIds.size).toBe(0)
+  })
+})
+
+// ---------------------------------------------------------------------------
+// integration: validation skips skipped questions
+// ---------------------------------------------------------------------------
+
+describe('integration: validation skips skipped questions', () => {
+  it('does not require answers for skipped questions', () => {
+    const form: RegistrationForm = {
+      currency: 'EUR',
+      decimals: 2,
+      pages: [{
+        id: 'p1',
+        title: 'Page 1',
+        questions: [
+          { id: 'name', type: 'short_text', label: 'Name', required: true, previous_answer: 'skip' },
+          { id: 'email', type: 'short_text', label: 'Email', required: true },
+        ],
+      }],
+    }
+    const skipped = new Set(['name'])
+    // name is skipped so only email should be validated
+    const errors = validateAnswers(form, { name: 'Alice' }, undefined, undefined, skipped)
+    expect(errors).toHaveLength(1)
+    expect(errors[0].questionId).toBe('email')
+  })
+
+  it('validatePage skips skipped questions', () => {
+    const form: RegistrationForm = {
+      currency: 'EUR',
+      decimals: 2,
+      pages: [{
+        id: 'p1',
+        title: 'Page 1',
+        questions: [
+          { id: 'name', type: 'short_text', label: 'Name', required: true, previous_answer: 'skip' },
+        ],
+      }],
+    }
+    const skipped = new Set(['name'])
+    const errors = validatePage(form, 0, {}, undefined, undefined, skipped)
+    expect(errors).toEqual({})
   })
 })

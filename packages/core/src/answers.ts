@@ -44,12 +44,13 @@ export function resolveAllAnswers(
   form: RegistrationForm,
   answers: Answers,
   now?: string,
+  previousAnswers?: Answers,
 ): ResolvedAnswer[] {
   const resolved: ResolvedAnswer[] = []
 
-  for (const page of visiblePages(form, answers)) {
+  for (const page of visiblePages(form, answers, previousAnswers)) {
     for (const q of page.questions ?? []) {
-      if (!isQuestionVisible(q, answers, now)) continue
+      if (!isQuestionVisible(q, answers, now, previousAnswers)) continue
       const value = resolveAnswer(q, answers[q.id])
       if (value !== null) {
         resolved.push({ questionId: q.id, label: q.label, value })
@@ -58,4 +59,31 @@ export function resolveAllAnswers(
   }
 
   return resolved
+}
+
+/**
+ * Apply previous answers to a form based on each question's `previous_answer` setting.
+ *
+ * @returns prefilled answers and the set of question IDs that should be skipped (auto-answered)
+ */
+export function applyPreviousAnswers(
+  form: RegistrationForm,
+  previousAnswers: Answers,
+): { prefilled: Answers; skippedQuestionIds: Set<string> } {
+  const prefilled: Answers = {}
+  const skippedQuestionIds = new Set<string>()
+
+  for (const page of form.pages ?? []) {
+    for (const q of page.questions ?? []) {
+      if (!q.previous_answer) continue
+      if (!(q.id in previousAnswers)) continue
+
+      prefilled[q.id] = previousAnswers[q.id]
+      if (q.previous_answer === 'skip') {
+        skippedQuestionIds.add(q.id)
+      }
+    }
+  }
+
+  return { prefilled, skippedQuestionIds }
 }

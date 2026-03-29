@@ -4,14 +4,14 @@ import { evaluateVisibleIf } from './visibility'
 /**
  * Evaluate all decision rules and return the set of page IDs that should be visible.
  */
-export function evaluateDecisionRules(rules: DecisionRule[], answers: Answers): Set<string> {
+export function evaluateDecisionRules(rules: DecisionRule[], answers: Answers, previousAnswers?: Answers): Set<string> {
   const visiblePageIds = new Set<string>()
 
   for (const rule of rules) {
     let matched = false
 
     for (const branch of rule.branches) {
-      if (evaluateVisibleIf(branch.condition, answers)) {
+      if (evaluateVisibleIf(branch.condition, answers, undefined, previousAnswers)) {
         for (const id of branch.pages) {
           visiblePageIds.add(id)
         }
@@ -55,13 +55,14 @@ export function isPageGated(pageId: string, rules: DecisionRule[]): boolean {
 export function evaluateDecisionResults(
   rules: DecisionRule[],
   answers: Answers,
+  previousAnswers?: Answers,
 ): DecisionResults {
   const values: Record<string, string> = {}
   const result_types: string[] = []
   for (const rule of rules) {
     let matched = false
     for (const branch of rule.branches) {
-      if (evaluateVisibleIf(branch.condition, answers)) {
+      if (evaluateVisibleIf(branch.condition, answers, undefined, previousAnswers)) {
         if (branch.result) {
           Object.assign(values, branch.result)
         }
@@ -75,8 +76,8 @@ export function evaluateDecisionResults(
   return { values, result_types }
 }
 
-export function isPageVisible(page: FormPage, rules: DecisionRule[], answers: Answers): boolean {
+export function isPageVisible(page: FormPage, rules: DecisionRule[], answers: Answers, previousAnswers?: Answers): boolean {
   if (!rules || rules.length === 0) return true
   if (!isPageGated(page.id, rules)) return true
-  return evaluateDecisionRules(rules, answers).has(page.id)
+  return evaluateDecisionRules(rules, answers, previousAnswers).has(page.id)
 }

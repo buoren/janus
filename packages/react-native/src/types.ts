@@ -22,4 +22,5 @@ export interface QuestionWidgetProps {
   fieldErrors: Record<string, string>
   styles: FormStyles
   datePlaceholder?: string
+  previousAnswers?: Record<string, any>
 }

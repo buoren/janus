@@ -228,3 +228,97 @@ describe('option visibility', () => {
     expect(isOptionVisible(opt, { role: 'student' })).toBe(false)
   })
 })
+
+// ---------------------------------------------------------------------------
+// prev_* conditions
+// ---------------------------------------------------------------------------
+
+describe('evaluateVisibleIf prev_* conditions', () => {
+  // prev_increased
+  test('prev_increased returns true when current > previous', () => {
+    expect(evaluateVisibleIf({ prev_increased: 'pain' }, { pain: 8 }, undefined, { pain: 5 })).toBe(true)
+  })
+
+  test('prev_increased returns false when current <= previous', () => {
+    expect(evaluateVisibleIf({ prev_increased: 'pain' }, { pain: 5 }, undefined, { pain: 5 })).toBe(false)
+    expect(evaluateVisibleIf({ prev_increased: 'pain' }, { pain: 3 }, undefined, { pain: 5 })).toBe(false)
+  })
+
+  test('prev_increased returns false when no previousAnswers', () => {
+    expect(evaluateVisibleIf({ prev_increased: 'pain' }, { pain: 8 })).toBe(false)
+  })
+
+  test('prev_increased returns false when values are non-numeric', () => {
+    expect(evaluateVisibleIf({ prev_increased: 'pain' }, { pain: 'high' }, undefined, { pain: 'low' })).toBe(false)
+  })
+
+  // prev_decreased
+  test('prev_decreased returns true when current < previous', () => {
+    expect(evaluateVisibleIf({ prev_decreased: 'pain' }, { pain: 3 }, undefined, { pain: 7 })).toBe(true)
+  })
+
+  test('prev_decreased returns false when current >= previous', () => {
+    expect(evaluateVisibleIf({ prev_decreased: 'pain' }, { pain: 7 }, undefined, { pain: 7 })).toBe(false)
+    expect(evaluateVisibleIf({ prev_decreased: 'pain' }, { pain: 9 }, undefined, { pain: 7 })).toBe(false)
+  })
+
+  test('prev_decreased returns false when no previousAnswers', () => {
+    expect(evaluateVisibleIf({ prev_decreased: 'pain' }, { pain: 3 })).toBe(false)
+  })
+
+  // prev_unchanged
+  test('prev_unchanged returns true when values are identical', () => {
+    expect(evaluateVisibleIf({ prev_unchanged: 'status' }, { status: 'active' }, undefined, { status: 'active' })).toBe(true)
+  })
+
+  test('prev_unchanged returns false when values differ', () => {
+    expect(evaluateVisibleIf({ prev_unchanged: 'status' }, { status: 'active' }, undefined, { status: 'inactive' })).toBe(false)
+  })
+
+  test('prev_unchanged returns false when no previousAnswers', () => {
+    expect(evaluateVisibleIf({ prev_unchanged: 'status' }, { status: 'active' })).toBe(false)
+  })
+
+  // prev_changed
+  test('prev_changed returns true when values differ', () => {
+    expect(evaluateVisibleIf({ prev_changed: 'status' }, { status: 'inactive' }, undefined, { status: 'active' })).toBe(true)
+  })
+
+  test('prev_changed returns false when values are identical', () => {
+    expect(evaluateVisibleIf({ prev_changed: 'status' }, { status: 'active' }, undefined, { status: 'active' })).toBe(false)
+  })
+
+  test('prev_changed returns false when no previousAnswers', () => {
+    expect(evaluateVisibleIf({ prev_changed: 'status' }, { status: 'active' })).toBe(false)
+  })
+
+  // prev_changed_from
+  test('prev_changed_from returns true when previous was the specified value', () => {
+    expect(evaluateVisibleIf({ prev_changed_from: ['status', 'active'] }, { status: 'inactive' }, undefined, { status: 'active' })).toBe(true)
+  })
+
+  test('prev_changed_from returns false when previous was different', () => {
+    expect(evaluateVisibleIf({ prev_changed_from: ['status', 'active'] }, { status: 'inactive' }, undefined, { status: 'pending' })).toBe(false)
+  })
+
+  test('prev_changed_from returns false when no previousAnswers', () => {
+    expect(evaluateVisibleIf({ prev_changed_from: ['status', 'active'] }, { status: 'inactive' })).toBe(false)
+  })
+
+  // prev_changed_to
+  test('prev_changed_to returns true when current is target and previous was different', () => {
+    expect(evaluateVisibleIf({ prev_changed_to: ['status', 'critical'] }, { status: 'critical' }, undefined, { status: 'normal' })).toBe(true)
+  })
+
+  test('prev_changed_to returns false when current is target but previous was same', () => {
+    expect(evaluateVisibleIf({ prev_changed_to: ['status', 'critical'] }, { status: 'critical' }, undefined, { status: 'critical' })).toBe(false)
+  })
+
+  test('prev_changed_to returns false when current is not target', () => {
+    expect(evaluateVisibleIf({ prev_changed_to: ['status', 'critical'] }, { status: 'normal' }, undefined, { status: 'normal' })).toBe(false)
+  })
+
+  test('prev_changed_to returns false when no previousAnswers', () => {
+    expect(evaluateVisibleIf({ prev_changed_to: ['status', 'critical'] }, { status: 'critical' })).toBe(false)
+  })
+})

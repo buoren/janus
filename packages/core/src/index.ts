@@ -38,7 +38,7 @@ export { evaluatePriceRule, calculatePaymentDetails } from './pricing'
 export { validatePage, validateAnswers } from './validation'
 
 // Answers
-export { resolveAnswer, resolveAllAnswers } from './answers'
+export { resolveAnswer, resolveAllAnswers, applyPreviousAnswers } from './answers'
 
 // Format
 export { formatPrice, parsePrice } from './format'

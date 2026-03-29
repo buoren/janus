@@ -1,8 +1,22 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useMemo } from 'react'
+import { applyPreviousAnswers } from '@janus/core'
+import type { RegistrationForm, Answers } from '@janus/core'
 import type { FormActions } from './types'
 
-export function useFormState(initialAnswers: Record<string, any> = {}) {
-  const [answers, setAnswers] = useState<Record<string, any>>(initialAnswers)
+export function useFormState(
+  initialAnswers: Record<string, any> = {},
+  form?: RegistrationForm,
+  previousAnswers?: Answers,
+) {
+  const { prefilled, skippedQuestionIds } = useMemo(() => {
+    if (!form || !previousAnswers) return { prefilled: {}, skippedQuestionIds: new Set<string>() }
+    return applyPreviousAnswers(form, previousAnswers)
+  }, [form, previousAnswers])
+
+  const [answers, setAnswers] = useState<Record<string, any>>(() => ({
+    ...prefilled,
+    ...initialAnswers,
+  }))
 
   const setAnswer = useCallback((questionId: string, value: any) => {
     setAnswers((prev) => ({ ...prev, [questionId]: value }))
@@ -34,5 +48,5 @@ export function useFormState(initialAnswers: Record<string, any> = {}) {
 
   const actions: FormActions = { setAnswer, toggleMultiChoice, setQuantity }
 
-  return { answers, setAnswers, ...actions, actions }
+  return { answers, setAnswers, ...actions, actions, previousAnswers, skippedQuestionIds }
 }

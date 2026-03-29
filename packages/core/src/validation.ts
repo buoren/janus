@@ -27,17 +27,20 @@ export function validatePage(
   pageIndex: number,
   answers: Answers,
   now?: string,
+  previousAnswers?: Answers,
+  skippedQuestionIds?: Set<string>,
 ): Record<string, string> {
   const page = form.pages?.[pageIndex]
   if (!page) return {}
 
   const rules = form.decision_rules ?? []
-  if (!isPageVisible(page, rules, answers)) return {}
+  if (!isPageVisible(page, rules, answers, previousAnswers)) return {}
 
   const errors: Record<string, string> = {}
   for (const q of page.questions ?? []) {
     if (!q.required) continue
-    if (!isQuestionVisible(q, answers, now)) continue
+    if (!isQuestionVisible(q, answers, now, previousAnswers)) continue
+    if (skippedQuestionIds?.has(q.id)) continue
     if (isUnanswered(q, answers[q.id])) {
       errors[q.id] = `${q.label} is required`
     }
@@ -54,6 +57,8 @@ export function validateAnswers(
   form: RegistrationForm | null | undefined,
   answers: Answers,
   now?: string,
+  previousAnswers?: Answers,
+  skippedQuestionIds?: Set<string>,
 ): ValidationError[] {
   const errors: ValidationError[] = []
 
@@ -64,7 +69,7 @@ export function validateAnswers(
 
   // Build lookup of all questions (only from visible pages)
   const questionsById = new Map<string, Question>()
-  for (const page of visiblePages(form, answers)) {
+  for (const page of visiblePages(form, answers, previousAnswers)) {
     for (const q of page.questions ?? []) {
       questionsById.set(q.id, q)
     }
@@ -73,7 +78,8 @@ export function validateAnswers(
   // Check required questions are answered (skip hidden)
   for (const [qId, q] of questionsById) {
     if (!q.required) continue
-    if (!isQuestionVisible(q, answers, now)) continue
+    if (!isQuestionVisible(q, answers, now, previousAnswers)) continue
+    if (skippedQuestionIds?.has(qId)) continue
     if (isUnanswered(q, answers[qId])) {
       errors.push({
         questionId: qId,
@@ -88,7 +94,7 @@ export function validateAnswers(
     if (!q) continue
 
     if (q.type === 'single_choice' && answer != null && answer !== '') {
-      const validIds = new Set(visibleOptions(q, answers, now).map((o) => o.id))
+      const validIds = new Set(visibleOptions(q, answers, now, previousAnswers).map((o) => o.id))
       if (!validIds.has(answer)) {
         errors.push({
           questionId: qId,
@@ -96,7 +102,7 @@ export function validateAnswers(
         })
       }
     } else if (q.type === 'multi_choice' && Array.isArray(answer)) {
-      const validIds = new Set(visibleOptions(q, answers, now).map((o) => o.id))
+      const validIds = new Set(visibleOptions(q, answers, now, previousAnswers).map((o) => o.id))
       for (const val of answer) {
         if (!validIds.has(val)) {
           errors.push({
@@ -106,7 +112,7 @@ export function validateAnswers(
         }
       }
     } else if (q.type === 'quantity_choice' && typeof answer === 'object' && !Array.isArray(answer)) {
-      const opts = visibleOptions(q, answers, now)
+      const opts = visibleOptions(q, answers, now, previousAnswers)
       const validIds = new Set(opts.map((o) => o.id))
       const maxQtyById = new Map(opts.map((o) => [o.id, o.max_quantity]))
 

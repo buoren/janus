@@ -12,6 +12,8 @@ interface FormPageProps {
   fieldErrors: Record<string, string>
   styles: FormStyles
   datePlaceholder?: string
+  previousAnswers?: Record<string, any>
+  skippedQuestionIds?: Set<string>
 }
 
 export const FormPage: React.FC<FormPageProps> = ({
@@ -23,10 +25,13 @@ export const FormPage: React.FC<FormPageProps> = ({
   fieldErrors,
   styles,
   datePlaceholder,
+  previousAnswers,
+  skippedQuestionIds,
 }) => {
-  const visibleQuestions = (page?.questions || []).filter((q: any) =>
-    evaluateVisibleIf(q.visible_if, answers)
-  )
+  const visibleQuestions = (page?.questions || []).filter((q: any) => {
+    if (skippedQuestionIds?.has(q.id)) return false
+    return evaluateVisibleIf(q.visible_if, answers, undefined, previousAnswers)
+  })
 
   return (
     <>
@@ -41,6 +46,7 @@ export const FormPage: React.FC<FormPageProps> = ({
           fieldErrors={fieldErrors}
           styles={styles}
           datePlaceholder={datePlaceholder}
+          previousAnswers={previousAnswers}
         />
       ))}
     </>

@@ -1,5 +1,6 @@
 import type { Answers, Question, RegistrationForm, ValidationError } from './types'
-import { isQuestionVisible, visibleOptions } from './visibility'
+import { isQuestionVisible, visibleOptions, visiblePages } from './visibility'
+import { isPageVisible } from './decision'
 
 /**
  * Check if an answer is considered "empty" for a given question.
@@ -30,6 +31,9 @@ export function validatePage(
   const page = form.pages?.[pageIndex]
   if (!page) return {}
 
+  const rules = form.decision_rules ?? []
+  if (!isPageVisible(page, rules, answers)) return {}
+
   const errors: Record<string, string> = {}
   for (const q of page.questions ?? []) {
     if (!q.required) continue
@@ -58,9 +62,9 @@ export function validateAnswers(
     return errors
   }
 
-  // Build lookup of all questions
+  // Build lookup of all questions (only from visible pages)
   const questionsById = new Map<string, Question>()
-  for (const page of form.pages) {
+  for (const page of visiblePages(form, answers)) {
     for (const q of page.questions ?? []) {
       questionsById.set(q.id, q)
     }

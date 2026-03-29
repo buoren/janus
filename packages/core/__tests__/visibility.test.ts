@@ -70,6 +70,47 @@ describe('evaluateVisibleIf', () => {
     expect(evaluateVisibleIf({ after: '2025-06-01' }, {}, '2025-05-15')).toBe(false)
   })
 
+  // less_than / greater_than
+  test('less_than returns true when value is below threshold', () => {
+    expect(evaluateVisibleIf({ less_than: ['age', 18] }, { age: 15 })).toBe(true)
+  })
+
+  test('less_than returns false when value equals threshold', () => {
+    expect(evaluateVisibleIf({ less_than: ['age', 18] }, { age: 18 })).toBe(false)
+  })
+
+  test('less_than returns false when value exceeds threshold', () => {
+    expect(evaluateVisibleIf({ less_than: ['age', 18] }, { age: 25 })).toBe(false)
+  })
+
+  test('greater_than returns true when value exceeds threshold', () => {
+    expect(evaluateVisibleIf({ greater_than: ['group_size', 10] }, { group_size: 15 })).toBe(true)
+  })
+
+  test('greater_than returns false when value equals threshold', () => {
+    expect(evaluateVisibleIf({ greater_than: ['group_size', 10] }, { group_size: 10 })).toBe(false)
+  })
+
+  test('greater_than returns false when value is below threshold', () => {
+    expect(evaluateVisibleIf({ greater_than: ['group_size', 10] }, { group_size: 5 })).toBe(false)
+  })
+
+  test('less_than coerces string answer to number', () => {
+    expect(evaluateVisibleIf({ less_than: ['age', 18] }, { age: '15' })).toBe(true)
+  })
+
+  test('greater_than coerces string answer to number', () => {
+    expect(evaluateVisibleIf({ greater_than: ['group_size', 10] }, { group_size: '15' })).toBe(true)
+  })
+
+  test('less_than with missing key returns true (NaN < n)', () => {
+    expect(evaluateVisibleIf({ less_than: ['age', 18] }, {})).toBe(false)
+  })
+
+  test('greater_than with missing key returns false (NaN > n)', () => {
+    expect(evaluateVisibleIf({ greater_than: ['group_size', 10] }, {})).toBe(false)
+  })
+
   // null/undefined condition
   test('null condition returns true', () => {
     expect(evaluateVisibleIf(null, {})).toBe(true)

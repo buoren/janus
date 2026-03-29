@@ -1,5 +1,5 @@
 import type { Answers, Question, ResolvedAnswer, RegistrationForm } from './types'
-import { isQuestionVisible, visibleOptions } from './visibility'
+import { isQuestionVisible, visiblePages } from './visibility'
 
 /**
  * Resolve a single answer to a human-readable string.
@@ -47,7 +47,7 @@ export function resolveAllAnswers(
 ): ResolvedAnswer[] {
   const resolved: ResolvedAnswer[] = []
 
-  for (const page of form.pages ?? []) {
+  for (const page of visiblePages(form, answers)) {
     for (const q of page.questions ?? []) {
       if (!isQuestionVisible(q, answers, now)) continue
       const value = resolveAnswer(q, answers[q.id])

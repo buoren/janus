@@ -14,6 +14,8 @@ export type VisibleIf =
   | { not_eq: [string, string] }
   | { before: string }
   | { after: string }
+  | { less_than: [string, number] }
+  | { greater_than: [string, number] }
 
 export interface QuestionOption {
   id: string
@@ -55,11 +57,30 @@ export interface PriceRule {
   rule: PriceRuleValue
 }
 
+export interface DecisionBranch {
+  condition: VisibleIf
+  pages: string[]
+  result?: Record<string, string>
+}
+
+export interface DecisionRule {
+  description: string
+  branches: DecisionBranch[]
+  default?: string[]
+  result_type?: string
+}
+
+export interface DecisionResults {
+  values: Record<string, string>
+  result_types: string[]
+}
+
 export interface RegistrationForm {
   currency: string
   decimals: number
   pages: FormPage[]
   price_rules?: PriceRule[]
+  decision_rules?: DecisionRule[]
 }
 
 export type Answers = Record<string, any>

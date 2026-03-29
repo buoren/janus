@@ -1,4 +1,5 @@
-import type { Answers, Question, QuestionOption, VisibleIf } from './types'
+import type { Answers, FormPage, Question, QuestionOption, RegistrationForm, VisibleIf } from './types'
+import { isPageVisible } from './decision'
 
 /**
  * Evaluate a visible_if condition against current answers.
@@ -40,6 +41,16 @@ export function evaluateVisibleIf(
     return answers[field] !== expected
   }
 
+  if ('less_than' in condition) {
+    const [field, threshold] = condition.less_than
+    return Number(answers[field]) < threshold
+  }
+
+  if ('greater_than' in condition) {
+    const [field, threshold] = condition.greater_than
+    return Number(answers[field]) > threshold
+  }
+
   const today = now ?? new Date().toISOString().slice(0, 10)
 
   if ('before' in condition) {
@@ -61,6 +72,13 @@ export function isQuestionVisible(question: Question, answers: Answers, now?: st
 /** Check whether an option should be visible given current answers. */
 export function isOptionVisible(option: QuestionOption, answers: Answers, now?: string): boolean {
   return evaluateVisibleIf(option.visible_if, answers, now)
+}
+
+/** Return only the pages that are visible given decision rules and answers. */
+export function visiblePages(form: RegistrationForm, answers: Answers): FormPage[] {
+  const rules = form.decision_rules ?? []
+  if (rules.length === 0) return form.pages ?? []
+  return (form.pages ?? []).filter((page) => isPageVisible(page, rules, answers))
 }
 
 /** Return only the options whose visible_if condition passes (or have none). */

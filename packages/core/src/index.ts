@@ -8,6 +8,9 @@ export type {
   PriceRuleValue,
   CountTier,
   PriceRule,
+  DecisionBranch,
+  DecisionRule,
+  DecisionResults,
   RegistrationForm,
   Answers,
   ValidationError,
@@ -16,12 +19,16 @@ export type {
   ResolvedAnswer,
 } from './types'
 
+// Decision rules
+export { evaluateDecisionRules, evaluateDecisionResults, isPageGated, isPageVisible } from './decision'
+
 // Visibility
 export {
   evaluateVisibleIf,
   isQuestionVisible,
   isOptionVisible,
   visibleOptions,
+  visiblePages,
 } from './visibility'
 
 // Pricing

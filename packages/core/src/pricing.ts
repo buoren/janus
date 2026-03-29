@@ -1,5 +1,5 @@
 import type { Answers, CountTier, PaymentDetails, PriceRuleValue, RegistrationForm } from './types'
-import { isQuestionVisible, visibleOptions } from './visibility'
+import { isQuestionVisible, visibleOptions, visiblePages } from './visibility'
 
 /** Normalize count_tier entries to [count, price] tuples. */
 function normalizeTier(tier: CountTier): [number, number] {
@@ -82,7 +82,7 @@ export function calculatePaymentDetails(
   const lines: PaymentDetails['lines'] = []
   let sortOrder = 0
 
-  for (const page of form.pages ?? []) {
+  for (const page of visiblePages(form, answers)) {
     for (const q of page.questions ?? []) {
       if (!isQuestionVisible(q, answers, now)) continue
 

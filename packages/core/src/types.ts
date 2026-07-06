@@ -41,8 +41,12 @@ export interface Question {
   required?: boolean
   visible_if?: VisibleIf
   options?: QuestionOption[]
+  options_source?: string
   previous_answer?: 'skip' | 'prefill'
 }
+
+/** A map of source keys to their resolved option arrays. */
+export type OptionsSourceData = Record<string, QuestionOption[]>
 
 export interface FormPage {
   id: string

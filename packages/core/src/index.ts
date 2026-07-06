@@ -17,6 +17,7 @@ export type {
   PaymentLine,
   PaymentDetails,
   ResolvedAnswer,
+  OptionsSourceData,
 } from './types'
 
 // Decision rules
@@ -39,6 +40,9 @@ export { validatePage, validateAnswers } from './validation'
 
 // Answers
 export { resolveAnswer, resolveAllAnswers, applyPreviousAnswers } from './answers'
+
+// Options source resolution
+export { resolveFormOptions, collectOptionsSources } from './options'
 
 // Format
 export { formatPrice, parsePrice } from './format'

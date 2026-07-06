@@ -1,5 +1,7 @@
 export type { FormTheme, FormActions, FormStyles, QuestionWidgetProps } from './types'
+export type { OptionsSourceFetcher } from './useOptionsSource'
 export { useFormState } from './useFormState'
+export { useOptionsSource } from './useOptionsSource'
 export { usePricing } from './usePricing'
 export { useValidation } from './useValidation'
 export { createFormStyles } from './createFormStyles'

@@ -6,12 +6,10 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "declaration": true
+    "declaration": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "lib": ["ES2020"]
   },
-  "references": [
-    { "path": "packages/core" },
-    { "path": "packages/authoring" },
-    { "path": "packages/react-native" }
-  ],
-  "files": []
+  "include": ["src"]
 }

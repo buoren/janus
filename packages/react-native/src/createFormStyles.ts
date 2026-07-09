@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import type { FormTheme } from './types'
+import type { FormTheme } from '@janus/react-core'
 
 export function createFormStyles(theme: FormTheme) {
   return StyleSheet.create({

@@ -1,5 +1,4 @@
 import React from 'react'
-import { View, Text } from 'react-native'
 import type { FormStyles } from '@janus/react-core'
 
 interface TotalBarProps {
@@ -10,6 +9,7 @@ interface TotalBarProps {
   styles: FormStyles
 }
 
+// DOM sibling of the RN TotalBar.
 export const TotalBar: React.FC<TotalBarProps> = ({
   runningTotal,
   currency,
@@ -20,10 +20,10 @@ export const TotalBar: React.FC<TotalBarProps> = ({
   if (runningTotal <= 0) return null
 
   return (
-    <View style={styles.totalBar}>
-      <Text style={styles.totalText}>
+    <div style={styles.totalBar}>
+      <div style={styles.totalText}>
         {totalLabel}: {currency} {formatPrice(runningTotal)}
-      </Text>
-    </View>
+      </div>
+    </div>
   )
 }

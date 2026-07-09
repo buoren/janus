@@ -16,7 +16,7 @@ interface FormPageProps {
   skippedQuestionIds?: Set<string>
 }
 
-// The React Native binding: core page logic rendered through RN question widgets.
+// The React DOM binding: core page logic rendered through DOM question widgets.
 export const FormPage: React.FC<FormPageProps> = (props) => (
   <CoreFormPage {...props} QuestionRenderer={QuestionRenderer} />
 )

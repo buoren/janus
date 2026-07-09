@@ -11,7 +11,9 @@
   "references": [
     { "path": "packages/core" },
     { "path": "packages/authoring" },
-    { "path": "packages/react-native" }
+    { "path": "packages/react-core" },
+    { "path": "packages/react-native" },
+    { "path": "packages/react-dom" }
   ],
   "files": []
 }

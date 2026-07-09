@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
 import { evaluateVisibleIf } from '@janus/core'
-import type { QuestionWidgetProps } from './types'
+import type { QuestionWidgetProps } from '@janus/react-core'
 
 export const QuestionRenderer: React.FC<QuestionWidgetProps> = ({
   question: q,

@@ -1,7 +1,7 @@
 {
-  "name": "@janus/react-native",
+  "name": "@janus/react-dom",
   "version": "0.1.0",
-  "description": "React Native form components and hooks for decision-tree registration forms",
+  "description": "React DOM (web) form components for decision-tree registration forms — the web sibling of @janus/react-native, over @janus/react-core",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "scripts": {
@@ -11,8 +11,7 @@
   "peerDependencies": {
     "@janus/core": "*",
     "@janus/react-core": "*",
-    "react": ">=18",
-    "react-native": ">=0.72"
+    "react": ">=18"
   },
   "files": [
     "src",
@@ -25,7 +24,6 @@
     "@janus/react-core": "*",
     "@types/react": "^19.2.14",
     "react": "^19.2.4",
-    "react-native": "^0.83.2",
     "typescript": "^5.9.3"
   }
 }

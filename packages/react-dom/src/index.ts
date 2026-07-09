@@ -1,6 +1,6 @@
-// React Native binding. Hooks + neutral types are re-exported from
-// @janus/react-core (the shared, headless layer); this package adds the RN
-// widgets. Public API is unchanged from before the react-core split.
+// React DOM (web) binding — the sibling of @janus/react-native. Hooks + neutral
+// types come from @janus/react-core; this package adds the web widgets. Its
+// public API mirrors @janus/react-native so the two are interchangeable.
 export type { FormTheme, FormActions, FormStyles, QuestionWidgetProps } from '@janus/react-core'
 export type { OptionsSourceFetcher } from '@janus/react-core'
 export { useFormState, useOptionsSource, usePricing, useValidation } from '@janus/react-core'

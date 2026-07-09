@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "janus-core"
+version = "0.1.0"
+description = "Python port of @janus/core: pricing, visibility, and decision logic for decision-tree registration forms"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[tool.setuptools.packages.find]
+include = ["janus_core*"]

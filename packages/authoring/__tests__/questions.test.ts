@@ -38,13 +38,14 @@ describe('conditionSources / singleChoiceQuestions', () => {
     { id: 'q2', type: 'short_text', label: 'B' },
     { id: 'q3', type: 'number', label: 'C' },
     { id: 'q4', type: 'single_choice', label: 'D', options: [] },
+    { id: 'q5', type: 'date', label: 'E' },
   ] as const
 
-  it('returns only earlier single-choice/number questions', () => {
-    expect(conditionSources(qs as any, 'q4').map((q) => q.id)).toEqual(['q1', 'q3'])
+  it('returns only earlier single-choice/number questions (text/date excluded)', () => {
+    expect(conditionSources(qs as any, 'q5').map((q) => q.id)).toEqual(['q1', 'q3', 'q4'])
   })
 
-  it('considers the whole list when no id is given', () => {
+  it('considers the whole list when no id is given (date is not a source)', () => {
     expect(conditionSources(qs as any).map((q) => q.id)).toEqual(['q1', 'q3', 'q4'])
   })
 

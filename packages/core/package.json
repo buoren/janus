@@ -1,5 +1,5 @@
 {
-  "name": "@janus/core",
+  "name": "@buoren/janus-core",
   "version": "0.1.0",
   "description": "Pure TypeScript engine for decision-tree form visibility, pricing, validation, and answer resolution",
   "type": "module",

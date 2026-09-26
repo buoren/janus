@@ -1,14 +1,14 @@
-# @janus/react-core
+# @buoren/janus-react-core
 
-Platform-agnostic React hooks and form logic for decision-tree registration forms, shared by [`@janus/react-native`](https://www.npmjs.com/package/@janus/react-native) and [`@janus/react-dom`](https://www.npmjs.com/package/@janus/react-dom).
+Platform-agnostic React hooks and form logic for decision-tree registration forms, shared by [`@buoren/janus-react-native`](https://www.npmjs.com/package/@buoren/janus-react-native) and [`@buoren/janus-react-dom`](https://www.npmjs.com/package/@buoren/janus-react-dom).
 
 ## Install
 
 ```bash
-npm install @janus/react-core
+npm install @buoren/janus-react-core
 ```
 
-Requires `@janus/core` and `react` (>=18) as peer dependencies.
+Requires `@buoren/janus-core` and `react` (>=18) as peer dependencies.
 
 ## Exports
 

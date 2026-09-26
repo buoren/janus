@@ -1,5 +1,5 @@
 import React from 'react'
-import type { FormStyles } from '@janus/react-core'
+import type { FormStyles } from '@buoren/janus-react-core'
 
 interface TotalBarProps {
   runningTotal: number

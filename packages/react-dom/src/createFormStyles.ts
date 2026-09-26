@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import type { FormTheme } from '@janus/react-core'
+import type { FormTheme } from '@buoren/janus-react-core'
 
 // DOM sibling of the RN createFormStyles: same visual intent, expressed as
 // inline CSS. Returns a plain style-key map (React.CSSProperties), which the DOM

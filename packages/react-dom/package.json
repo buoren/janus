@@ -1,7 +1,7 @@
 {
-  "name": "@janus/react-dom",
+  "name": "@buoren/janus-react-dom",
   "version": "0.1.0",
-  "description": "React DOM (web) form components for decision-tree registration forms — the web sibling of @janus/react-native, over @janus/react-core",
+  "description": "React DOM (web) form components for decision-tree registration forms — the web sibling of @buoren/janus-react-native, over @buoren/janus-react-core",
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -20,8 +20,8 @@
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
-    "@janus/core": "^0.1.0",
-    "@janus/react-core": "^0.1.0",
+    "@buoren/janus-core": "^0.1.0",
+    "@buoren/janus-react-core": "^0.1.0",
     "react": ">=18"
   },
   "files": [
@@ -38,8 +38,8 @@
     "access": "public"
   },
   "devDependencies": {
-    "@janus/core": "*",
-    "@janus/react-core": "*",
+    "@buoren/janus-core": "*",
+    "@buoren/janus-react-core": "*",
     "@types/react": "^19.2.14",
     "react": "^19.2.4",
     "tsup": "^8.3.5",

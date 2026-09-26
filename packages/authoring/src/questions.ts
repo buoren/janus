@@ -1,4 +1,4 @@
-import type { Question, QuestionType } from '@janus/core'
+import type { Question, QuestionType } from '@buoren/janus-core'
 
 /** Answer types that carry a list of options. */
 export function hasOptions(type: QuestionType): boolean {

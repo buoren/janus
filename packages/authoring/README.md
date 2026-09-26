@@ -1,14 +1,14 @@
-# @janus/authoring
+# @buoren/janus-authoring
 
 Authoring helpers for building Janus forms: id generation, `visible_if` round-tripping, cross-field pricing compilation, and page-less form conversion.
 
 ## Install
 
 ```bash
-npm install @janus/authoring
+npm install @buoren/janus-authoring
 ```
 
-Requires `@janus/core` as a peer dependency.
+Requires `@buoren/janus-core` as a peer dependency.
 
 Part of the [Janus](https://github.com/buoren/janus) monorepo.
 

@@ -1,4 +1,4 @@
-import type { FormPage, Question, RegistrationForm } from '@janus/core'
+import type { FormPage, Question, RegistrationForm } from '@buoren/janus-core'
 
 /**
  * The page-less shape a builder works with: a flat question list plus pricing.

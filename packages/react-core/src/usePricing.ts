@@ -3,7 +3,7 @@ import {
   evaluateVisibleIf,
   calculatePaymentDetails,
   formatPrice as formatPriceCore,
-} from '@janus/core'
+} from '@buoren/janus-core'
 
 export function usePricing(registrationForm: any, answers: Record<string, any>) {
   const decimals = registrationForm?.decimals ?? 2

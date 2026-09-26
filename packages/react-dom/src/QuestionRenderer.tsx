@@ -1,6 +1,6 @@
 import React from 'react'
-import { evaluateVisibleIf } from '@janus/core'
-import type { QuestionWidgetProps } from '@janus/react-core'
+import { evaluateVisibleIf } from '@buoren/janus-core'
+import type { QuestionWidgetProps } from '@buoren/janus-react-core'
 
 // DOM sibling of the RN QuestionRenderer. Same question types, same actions
 // contract, same visibility filtering — rendered with DOM controls.

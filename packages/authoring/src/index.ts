@@ -1,5 +1,5 @@
 // Authoring helpers for building Janus forms. The runtime engine lives in
-// @janus/core; this package covers what a form *editor* needs and core does not:
+// @buoren/janus-core; this package covers what a form *editor* needs and core does not:
 // id generation, condition round-tripping, cross-field price compilation, and
 // converting a page-less editor form to/from a Janus RegistrationForm.
 

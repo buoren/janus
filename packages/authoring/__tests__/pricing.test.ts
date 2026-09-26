@@ -1,5 +1,5 @@
-import type { Question } from '@janus/core'
-import { calculatePaymentDetails } from '@janus/core'
+import type { Question } from '@buoren/janus-core'
+import { calculatePaymentDetails } from '@buoren/janus-core'
 import { compileGridRule } from '../src/pricing'
 import { toRegistrationForm } from '../src/form'
 
@@ -61,7 +61,7 @@ describe('compileGridRule', () => {
   })
 
   it('produces a rule the core engine actually prices', () => {
-    // The compiled rule + a single page = a valid form that @janus/core evaluates.
+    // The compiled rule + a single page = a valid form that @buoren/janus-core evaluates.
     const compiled = compileGridRule(
       { description: 'Festival ticket', fieldA: 'q_ticket', fieldB: 'q_age', cells: { 'weekend|adult': 19500 } },
       [ticket, age],

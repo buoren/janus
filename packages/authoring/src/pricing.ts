@@ -1,4 +1,4 @@
-import type { PriceRule, Question } from '@janus/core'
+import type { PriceRule, Question } from '@buoren/janus-core'
 
 /**
  * A cross-field pricing grid, as edited in a table. Prices are in the smallest

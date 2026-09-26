@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react'
-import { applyPreviousAnswers } from '@janus/core'
-import type { RegistrationForm, Answers } from '@janus/core'
+import { applyPreviousAnswers } from '@buoren/janus-core'
+import type { RegistrationForm, Answers } from '@buoren/janus-core'
 import type { FormActions } from './types'
 
 export function useFormState(

@@ -1,5 +1,5 @@
 import React from 'react'
-import { evaluateVisibleIf } from '@janus/core'
+import { evaluateVisibleIf } from '@buoren/janus-core'
 import type { FormActions, FormStyles, QuestionWidgetProps } from './types'
 
 interface FormPageProps {
@@ -13,8 +13,8 @@ interface FormPageProps {
   datePlaceholder?: string
   previousAnswers?: Record<string, any>
   skippedQuestionIds?: Set<string>
-  /** The platform's question widget. @janus/react-native passes its RN
-   *  renderer; @janus/react-dom passes its DOM renderer. This is the single
+  /** The platform's question widget. @buoren/janus-react-native passes its RN
+   *  renderer; @buoren/janus-react-dom passes its DOM renderer. This is the single
    *  seam that keeps page-level visibility logic shared across platforms. */
   QuestionRenderer: React.ComponentType<QuestionWidgetProps>
 }

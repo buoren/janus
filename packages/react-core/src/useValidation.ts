@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { validatePage } from '@janus/core'
+import { validatePage } from '@buoren/janus-core'
 
 export function useValidation() {
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})

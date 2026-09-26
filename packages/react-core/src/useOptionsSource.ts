@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
-import { collectOptionsSources, resolveFormOptions } from '@janus/core'
-import type { QuestionOption, RegistrationForm, OptionsSourceData } from '@janus/core'
+import { collectOptionsSources, resolveFormOptions } from '@buoren/janus-core'
+import type { QuestionOption, RegistrationForm, OptionsSourceData } from '@buoren/janus-core'
 
 /** Async function that fetches options for a given source key. */
 export type OptionsSourceFetcher = (sourceKey: string) => Promise<QuestionOption[]>

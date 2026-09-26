@@ -1,4 +1,4 @@
-import type { Question, RegistrationForm } from '@janus/core'
+import type { Question, RegistrationForm } from '@buoren/janus-core'
 import { toFlatForm, toRegistrationForm } from '../src/form'
 
 const q1: Question = { id: 'q_a', type: 'short_text', label: 'A' }

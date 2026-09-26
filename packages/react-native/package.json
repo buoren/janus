@@ -1,5 +1,5 @@
 {
-  "name": "@janus/react-native",
+  "name": "@buoren/janus-react-native",
   "version": "0.1.0",
   "description": "React Native form components and hooks for decision-tree registration forms",
   "type": "module",
@@ -20,8 +20,8 @@
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
-    "@janus/core": "^0.1.0",
-    "@janus/react-core": "^0.1.0",
+    "@buoren/janus-core": "^0.1.0",
+    "@buoren/janus-react-core": "^0.1.0",
     "react": ">=18",
     "react-native": ">=0.72"
   },
@@ -39,8 +39,8 @@
     "access": "public"
   },
   "devDependencies": {
-    "@janus/core": "*",
-    "@janus/react-core": "*",
+    "@buoren/janus-core": "*",
+    "@buoren/janus-react-core": "*",
     "@types/react": "^19.2.14",
     "react": "^19.2.4",
     "react-native": "^0.83.2",

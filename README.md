@@ -6,8 +6,8 @@ TypeScript library for JSON decision-tree forms — visibility, pricing, validat
 
 | Package | Description |
 |---------|-------------|
-| `@janus/core` | Pure TypeScript engine: visibility evaluation, pricing calculation, validation, answer resolution |
-| `@janus/react-native` | React Native hooks and components: `useFormState`, `usePricing`, `useValidation`, `FormPage`, `TotalBar` |
+| `@buoren/janus-core` | Pure TypeScript engine: visibility evaluation, pricing calculation, validation, answer resolution |
+| `@buoren/janus-react-native` | React Native hooks and components: `useFormState`, `usePricing`, `useValidation`, `FormPage`, `TotalBar` |
 
 ## Setup
 
@@ -25,7 +25,7 @@ npm test            # Run all tests (core: 95 tests)
 npm run build       # Build all packages (generates dist/)
 ```
 
-## `@janus/core`
+## `@buoren/janus-core`
 
 Pure TypeScript, zero dependencies. Exports:
 
@@ -36,9 +36,9 @@ Pure TypeScript, zero dependencies. Exports:
 - **Format**: `formatPrice`, `parsePrice`
 - **Types**: `RegistrationForm`, `FormPage`, `Question`, `QuestionOption`, `Answers`, `PaymentDetails`, etc.
 
-## `@janus/react-native`
+## `@buoren/janus-react-native`
 
-Peer deps: `@janus/core`, `react`, `react-native`. Exports:
+Peer deps: `@buoren/janus-core`, `react`, `react-native`. Exports:
 
 - **Hooks**: `useFormState`, `usePricing`, `useValidation`
 - **Components**: `FormPage`, `TotalBar`, `QuestionRenderer`

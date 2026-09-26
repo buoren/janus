@@ -1,11 +1,11 @@
-# @janus/core
+# @buoren/janus-core
 
 Pure TypeScript engine for JSON decision-tree forms: visibility evaluation, pricing calculation, validation, and answer resolution. Zero dependencies.
 
 ## Install
 
 ```bash
-npm install @janus/core
+npm install @buoren/janus-core
 ```
 
 ## Exports

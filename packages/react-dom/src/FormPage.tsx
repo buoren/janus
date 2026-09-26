@@ -1,6 +1,6 @@
 import React from 'react'
-import { FormPage as CoreFormPage } from '@janus/react-core'
-import type { FormActions, FormStyles } from '@janus/react-core'
+import { FormPage as CoreFormPage } from '@buoren/janus-react-core'
+import type { FormActions, FormStyles } from '@buoren/janus-react-core'
 import { QuestionRenderer } from './QuestionRenderer'
 
 interface FormPageProps {

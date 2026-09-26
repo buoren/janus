@@ -1,4 +1,4 @@
-import type { VisibleIf } from '@janus/core'
+import type { VisibleIf } from '@buoren/janus-core'
 
 /**
  * The binary condition operators an authoring UI edits directly. (Janus's full

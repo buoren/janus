@@ -1,5 +1,5 @@
 {
-  "name": "@janus/authoring",
+  "name": "@buoren/janus-authoring",
   "version": "0.1.0",
   "description": "Authoring helpers for building Janus forms: id generation, visible_if round-tripping, cross-field pricing compilation, and page-less form conversion",
   "type": "module",
@@ -34,10 +34,10 @@
     "access": "public"
   },
   "peerDependencies": {
-    "@janus/core": "^0.1.0"
+    "@buoren/janus-core": "^0.1.0"
   },
   "devDependencies": {
-    "@janus/core": "*",
+    "@buoren/janus-core": "*",
     "@types/jest": "^29.5.14",
     "jest": "^29.7.0",
     "ts-jest": "^29.3.4",

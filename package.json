@@ -7,9 +7,18 @@
     "packages/*"
   ],
   "scripts": {
-    "typecheck": "npm run typecheck --workspaces",
+    "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
-    "build": "npm run build --workspaces --if-present"
+    "build": "npm run build -w packages/core -w packages/authoring -w packages/react-core -w packages/react-dom -w packages/react-native"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "author": "Kevin Buoren Shiue",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buoren/janus.git"
+  },
+  "bugs": {
+    "url": "https://github.com/buoren/janus/issues"
+  },
+  "homepage": "https://github.com/buoren/janus#readme"
 }

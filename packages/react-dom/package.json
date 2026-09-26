@@ -2,28 +2,47 @@
   "name": "@janus/react-dom",
   "version": "0.1.0",
   "description": "React DOM (web) form components for decision-tree registration forms — the web sibling of @janus/react-native, over @janus/react-core",
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "sideEffects": false,
   "scripts": {
     "typecheck": "npx tsc --noEmit",
-    "build": "npx tsc"
+    "build": "tsup",
+    "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
-    "@janus/core": "*",
-    "@janus/react-core": "*",
+    "@janus/core": "^0.1.0",
+    "@janus/react-core": "^0.1.0",
     "react": ">=18"
   },
   "files": [
-    "src",
     "dist"
   ],
   "license": "MIT",
-  "private": true,
+  "author": "Kevin Buoren Shiue",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buoren/janus.git",
+    "directory": "packages/react-dom"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@janus/core": "*",
     "@janus/react-core": "*",
     "@types/react": "^19.2.14",
     "react": "^19.2.4",
+    "tsup": "^8.3.5",
     "typescript": "^5.9.3"
   }
 }

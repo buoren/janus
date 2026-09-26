@@ -37,6 +37,11 @@ export interface Question {
   type: QuestionType
   label: string
   description?: string
+  /**
+   * Why this information is collected — the GDPR "purpose". Required when
+   * authoring a question; it feeds the auto-generated per-series data policy.
+   */
+  reason?: string
   placeholder?: string
   required?: boolean
   visible_if?: VisibleIf

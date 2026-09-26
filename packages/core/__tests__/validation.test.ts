@@ -99,6 +99,58 @@ describe('validation multi_choice hidden options', () => {
 })
 
 // ---------------------------------------------------------------------------
+// validateAnswers / validatePage — required multi_choice needs >= 1 checked
+// ---------------------------------------------------------------------------
+
+describe('required multi_choice needs at least one selection', () => {
+  const form: RegistrationForm = {
+    currency: 'EUR',
+    decimals: 2,
+    pages: [{
+      id: 'p1',
+      title: 'Page 1',
+      questions: [{
+        id: 'waiver',
+        type: 'multi_choice',
+        label: 'Waiver',
+        required: true,
+        options: [
+          { id: 'agree', label: 'I have read and agree to the waiver' },
+          { id: 'photo', label: 'I consent to photography' },
+        ],
+      }],
+    }],
+  }
+
+  test('missing answer is unanswered', () => {
+    const errors = validateAnswers(form, {})
+    expect(errors.some((e) => e.message.includes('not answered'))).toBe(true)
+  })
+
+  test('empty selection is unanswered', () => {
+    const errors = validateAnswers(form, { waiver: [] })
+    expect(errors.some((e) => e.message.includes('not answered'))).toBe(true)
+  })
+
+  test('at least one checked is valid', () => {
+    expect(validateAnswers(form, { waiver: ['agree'] })).toHaveLength(0)
+  })
+
+  test('validatePage flags the empty required multi_choice', () => {
+    expect(validatePage(form, 0, { waiver: [] })).toHaveProperty('waiver')
+    expect(validatePage(form, 0, { waiver: ['agree'] })).toEqual({})
+  })
+
+  test('not required empty selection is valid', () => {
+    const optional: RegistrationForm = {
+      ...form,
+      pages: [{ ...form.pages![0], questions: [{ ...form.pages![0].questions![0], required: false }] }],
+    }
+    expect(validateAnswers(optional, { waiver: [] })).toHaveLength(0)
+  })
+})
+
+// ---------------------------------------------------------------------------
 // quantity_choice validation
 // ---------------------------------------------------------------------------
 
